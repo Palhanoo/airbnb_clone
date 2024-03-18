@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
@@ -64,10 +65,12 @@ export default function RootLayout() {
     return null;
   }
 
-  return <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}> 
-  <RootLayoutNav />
+  return <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <RootLayoutNav /> 
+    </GestureHandlerRootView>
   </ClerkProvider>
-  ;
+    ;
 }
 
 function RootLayoutNav() {
@@ -75,7 +78,7 @@ function RootLayoutNav() {
   const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
-    if(isLoaded && !isSignedIn) {
+    if (isLoaded && !isSignedIn) {
       router.push('/(modals)/login')
     }
   }, [isLoaded])
@@ -97,8 +100,9 @@ function RootLayoutNav() {
       />
       <Stack.Screen name="listing/[id]"
         options={{
-          headerTitleStyle: { fontFamily: 'mon-sb' },
-          headerTitle: ''
+          // headerTitleStyle: { fontFamily: 'mon-sb' },
+          headerTransparent: true,
+          headerTitle: '',
         }}
       />
       <Stack.Screen name='(modals)/booking'

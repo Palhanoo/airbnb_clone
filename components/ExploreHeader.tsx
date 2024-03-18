@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import React, { useRef, useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -81,7 +82,7 @@ const ExploreHeader = ({onCategoryChanged}: Props) => {
 
         <ScrollView horizontal
           ref={scrollRef}
-          showsHorizontalScrollIndicator={true}
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: 'center',
             gap: 30,
