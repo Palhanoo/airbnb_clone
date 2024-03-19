@@ -7,6 +7,7 @@ import listingsData from '@/assets/data/airbnb-listings.json'
 import listingsDataGeo from '@/assets/data/airbnb-listings.geo.json'
 import ListingsMap from '@/components/ListingsMap'
 import * as Location from 'expo-location'
+import ListingsBottomSheet from '@/components/ListingsBottomSheet'
 
 
 const Page = () => {
@@ -49,6 +50,7 @@ const Page = () => {
       }} />
       {/* <Listings listings={items} category={category} /> */}
       <ListingsMap listings={listingsDataGeo} location={location} /> 
+      <ListingsBottomSheet listings={items} category={category} />
     </View>
   )
 }
