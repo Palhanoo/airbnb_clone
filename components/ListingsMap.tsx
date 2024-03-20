@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { memo } from 'react'
 import { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import { ListingGeo } from '@/interfaces/listingGeo';
 import { useRouter } from 'expo-router';
@@ -17,7 +17,7 @@ const INITIAL_REGION = {
     longitudeDelta: 0.1421,
 }
 
-export const ListingsMap = ({ listings, location }: Props) => {
+export const ListingsMap = memo(({ listings, location }: Props) => {
     const router = useRouter()
     const onMarkerSelected = (item: ListingGeo) => {
         router.push(`/listing/${item.properties.id}`)
@@ -67,7 +67,7 @@ export const ListingsMap = ({ listings, location }: Props) => {
             </MapView>
         </View>
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {

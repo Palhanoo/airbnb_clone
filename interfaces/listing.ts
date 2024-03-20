@@ -16,7 +16,7 @@ export interface Listing {
     house_rules?: null | any;
     thumbnail_url: null | string;
     medium_url: null | string;
-    picture_url: null | Pictureurl;
+    picture_url: Pictureurl;
     xl_picture_url: null | string;
     host_id: null | string;
     host_url: null | string;

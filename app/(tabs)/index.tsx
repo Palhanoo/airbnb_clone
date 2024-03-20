@@ -12,10 +12,11 @@ import ListingsBottomSheet from '@/components/ListingsBottomSheet'
 
 const Page = () => {
 
-  const [location, setLocation] = useState<null|Location.LocationObject>(null);
-  const [errorMsg, setErrorMsg] = useState<null|string>(null);
+  const [location, setLocation] = useState<null | Location.LocationObject>(null);
+  const [errorMsg, setErrorMsg] = useState<null | string>(null);
   const [category, setCategory] = useState('Tiny homes')
   const items = useMemo(() => listingsData, [])
+  const geoItems = useMemo(() => listingsDataGeo, [])
 
   const onDataChanged = (category: string) => {
     setCategory(category)
@@ -24,7 +25,7 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      
+
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -44,12 +45,12 @@ const Page = () => {
   }
 
   return (
-    <View style={{ flex: 1, marginTop: 130 }}>
+    <View style={{ flex: 1, marginTop: 80 }}>
       <Stack.Screen options={{
         header: () => <ExploreHeader onCategoryChanged={onDataChanged} />
       }} />
       {/* <Listings listings={items} category={category} /> */}
-      <ListingsMap listings={listingsDataGeo} location={location} /> 
+      <ListingsMap listings={geoItems} location={location} />
       <ListingsBottomSheet listings={items} category={category} />
     </View>
   )

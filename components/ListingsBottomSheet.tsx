@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { Listing } from '@/interfaces/listing'
 import BottomSheet from '@gorhom/bottom-sheet';
 import Listings from './Listings';
@@ -9,14 +9,15 @@ import { Ionicons } from '@expo/vector-icons';
 interface Props {
     listings: Listing[];
     category: string;
-    refresh: number;
 }
 const ListingsBottomSheet = ({ listings, category }: Props) => {
     const BottomSheetRef = useRef<BottomSheet>(null)
     const snapPoints = useMemo(() => ['10%', '100%'], [])
+    const [refresh, setRefresh] = useState(0)
 
     const showMap = () => {
         BottomSheetRef.current?.collapse()
+        setRefresh(refresh + 1)
     }
 
     return (
@@ -29,7 +30,7 @@ const ListingsBottomSheet = ({ listings, category }: Props) => {
             handleIndicatorStyle={{ backgroundColor: Colors.grey }}
         >
             <View style={{ flex: 1 }}>
-                <Listings listings={listings} category={category} />
+                <Listings listings={listings} category={category} refresh={refresh} />
                 <View style={styles.absoluteBtn}>
                     <TouchableOpacity onPress={showMap} style={styles.btn}>
                         <Text style={{ fontFamily: 'mon-sb', color: 'white' }}>Map</Text>

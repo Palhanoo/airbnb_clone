@@ -5,15 +5,24 @@ import { Link } from 'expo-router';
 import { Listing } from '@/interfaces/listing';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
+import BottomSheet, { BottomSheetFlatList, BottomSheetFlatListMethods } from '@gorhom/bottom-sheet';
 
 interface Props {
   listings: any[];
   category: string;
+  refresh: number;
 }
 
-const Listings = ({ listings: items, category }: Props) => {
+const Listings = ({ listings: items, category, refresh }: Props) => {
   const [loading, setLoading] = useState(false)
-  const listRef = useRef<FlatList>(null);
+  const listRef = useRef<BottomSheetFlatListMethods>(null);
+
+  useEffect(() => {
+    if (refresh) {
+      listRef.current?.scrollToOffset({ offset: 0, animated: true }) //maybe you dont want it to always come back to the top (but good to know how to do)
+    }
+
+  }, [refresh])
 
   useEffect(() => {
     console.log('Listings for', items.length)
@@ -56,11 +65,13 @@ const Listings = ({ listings: items, category }: Props) => {
   )
 
   return (
-    <View>
-      <FlatList
+    <View style={{flex: 1}}>
+      <BottomSheetFlatList
+        style={{ flex: 1 }}
         renderItem={renderRow}
         ref={listRef}
         data={loading ? [] : items}
+        ListHeaderComponent={<Text style={styles.info}>{items.length} homes</Text>}
       />
     </View>
   )
@@ -76,6 +87,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
     borderRadius: 10,
+  },
+  info: {
+    textAlign: 'center',
+    fontFamily: 'mon-sb',
+    fontSize: 16
   }
 })
 
