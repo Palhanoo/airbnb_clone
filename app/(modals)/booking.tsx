@@ -48,7 +48,7 @@ const Booking = () => {
   };
   
   return (
-    <BlurView intensity={70} style={styles.container} experimentalBlurMethod='dimezisBlurView'>
+    <BlurView intensity={90} style={styles.container} experimentalBlurMethod='dimezisBlurView'>
       <View style={styles.card}>
         {openCard != 0 && (
           <AnimatedTouchableOpacity

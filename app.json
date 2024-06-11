@@ -37,7 +37,8 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow AirBNB to use your location."
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,

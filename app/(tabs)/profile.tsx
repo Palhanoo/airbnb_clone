@@ -6,10 +6,14 @@ import { Ionicons } from '@expo/vector-icons'
 import { defaultStyles } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
+import api from '@/constants/Api'
 
 const Profile = () => {
   const { isSignedIn, signOut } = useAuth()
   const { user } = useUser();
+  if(!user) {
+    return <Text>Loading...</Text>
+  }
   const [firstName, setFirstName] = useState(user?.firstName)
   const [lastName, setLastName] = useState(user?.lastName)
   const [email, setEmail] = useState(user?.emailAddresses[0].emailAddress)
@@ -17,10 +21,32 @@ const Profile = () => {
 
   useEffect(() => {
     if (!user) return;
-
-    setFirstName(user.firstName)
-    setLastName(user.lastName)
-    setEmail(user.emailAddresses[0].emailAddress)
+    const abortController = new AbortController()
+    setFirstName(() => user.firstName)
+    setLastName(() => user.lastName)
+    setEmail(() => user.emailAddresses[0].emailAddress)
+    const sendDataToApi = async () => {
+      try {
+        const res = await api.post('users', {
+          name: user.firstName + ' ' + user.lastName,
+          email: user.emailAddresses[0].emailAddress,
+          password: user.id,
+          role: 'user',
+          provider: 'facebook',
+          providerId: user.id,
+          picture: user.imageUrl,
+          // accessToken: user.id,
+        })
+        console.log(res.data)
+      } catch (err) {
+        if (abortController.signal.aborted) {
+          console.log('Data fetching cancelled');
+        } else {
+          // Handle error
+        } console.log(err)
+      }
+    }
+    sendDataToApi()
   }, [user])
 
   const onSaveUser = async () => {
@@ -53,7 +79,6 @@ const Profile = () => {
       })
     }
   }
-
 
   return (
     <SafeAreaView style={defaultStyles.container}>

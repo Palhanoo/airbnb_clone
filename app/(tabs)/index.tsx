@@ -50,7 +50,7 @@ const Page = () => {
         header: () => <ExploreHeader onCategoryChanged={onDataChanged} />
       }} />
       {/* <Listings listings={items} category={category} /> */}
-      <ListingsMap listings={geoItems} location={location} />
+      {/* <ListingsMap listings={geoItems} location={location} /> */}
       <ListingsBottomSheet listings={items} category={category} />
     </View>
   )

@@ -1,22 +1,22 @@
-import { Ionicons } from '@expo/vector-icons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useFonts } from 'expo-font';
-import { Stack, useRouter } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
-import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import ModalHeaderText from '@/components/ModalHeaderText';
-import Colors from '@/constants/Colors';
+import { Ionicons } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useFonts } from "expo-font";
+import { Stack, useRouter } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { TouchableOpacity } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import ModalHeaderText from "@/components/ModalHeaderText";
+import Colors from "@/constants/Colors";
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 const tokenCache = {
   async getToken(key: string) {
     try {
-      return SecureStore.getItemAsync(key)
+      return SecureStore.getItemAsync(key);
     } catch (err) {
       return null;
     }
@@ -28,17 +28,16 @@ const tokenCache = {
       return;
     }
   },
-}
-
+};
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
-} from 'expo-router';
+} from "expo-router";
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: "(tabs)",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -46,9 +45,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    'mon': require('../assets/fonts/Montserrat-Regular.ttf'),
-    'mon-sb': require('../assets/fonts/Montserrat-SemiBold.ttf'),
-    'mon-b': require('../assets/fonts/Montserrat-Bold.ttf'),
+    mon: require("../assets/fonts/Montserrat-Regular.ttf"),
+    "mon-sb": require("../assets/fonts/Montserrat-SemiBold.ttf"),
+    "mon-b": require("../assets/fonts/Montserrat-Bold.ttf"),
     ...FontAwesome.font,
   });
 
@@ -67,62 +66,66 @@ export default function RootLayout() {
     return null;
   }
 
-  return <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
+  return (
+    // <ClerkProvider publishableKey={"pk_test_dG9sZXJhbnQtbG9jdXN0LTg4LmNsZXJrLmFjY291bnRzLmRldiQ"!} tokenCache={tokenCache}>
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <RootLayoutNav /> 
+      <RootLayoutNav />
     </GestureHandlerRootView>
-  </ClerkProvider>
-    ;
+    // {/* </ClerkProvider> */}
+  );
 }
 
 function RootLayoutNav() {
-  const router = useRouter()
+  const router = useRouter();
   const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
-      router.push('/(modals)/login')
+      router.push("/(modals)/login");
     }
-  }, [isLoaded])
+  }, [isLoaded]);
 
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(modals)/login"
+      {/* <Stack.Screen
+        name="(modals)/login"
         options={{
-          headerTitleStyle: { fontFamily: 'mon-sb' },
-          presentation: 'modal',
+          headerTitleStyle: { fontFamily: "mon-sb" },
+          presentation: "modal",
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <Ionicons name="close-outline" size={24} />
             </TouchableOpacity>
           ),
-          headerTitle: 'Log in or sign up'
+          headerTitle: "Log in or sign up",
         }}
-      />
-      <Stack.Screen name="listing/[id]"
+      /> */}
+      <Stack.Screen
+        name="listing/[id]"
         options={{
           // headerTitleStyle: { fontFamily: 'mon-sb' },
           headerTransparent: true,
-          headerTitle: '',
+          headerTitle: "",
         }}
       />
-      <Stack.Screen name='(modals)/booking'
+      <Stack.Screen
+        name="(modals)/booking"
         options={{
-          presentation: 'transparentModal',
-          animation: 'fade',
+          presentation: "transparentModal",
+          animation: "fade",
           headerTransparent: true,
           headerTitle: () => <ModalHeaderText />,
           headerBackVisible: false,
           headerLeft: () => (
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => router.back()}
               style={{
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 borderColor: Colors.grey,
                 borderRadius: 20,
                 borderWidth: 1,
-                padding: 4
+                padding: 4,
               }}
             >
               <Ionicons name="close-outline" size={24} />
